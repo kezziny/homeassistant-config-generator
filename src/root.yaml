@@ -1,0 +1,6 @@
+switch cmd:
+  platform: command_line
+  switches:
+    config_generator:
+      command_on: 'python3 /config/components/config_generator/py/generate.py'
+      command_off: ''

@@ -1,0 +1,27 @@
+where:
+  type: cover
+target: ../cover
+name: '<<_room_>>'
+template: 
+  - platform: mqtt
+    name: <<room>> <<name>>
+    device_class: blind
+    position_topic: '<<global.mqtt_prefix>>/<<room>>/<<topic>>'
+    value_template: '{{ value_json.position }}'
+    set_position_topic: '<<global.mqtt_prefix>>/<<room>>/<<topic>>/set'
+    set_position_template: '{ "position": {{ position }} }'
+    json_attributes_topic: '<<global.mqtt_prefix>>/<<room>>/<<topic>>'
+    json_attributes_template: >
+      {
+          {% if "illuminance" in value_json %}
+              "illuminance": {{value_json.illuminance}},
+          {% endif %}
+          {% if "battery" in value_json %}
+              "battery": {{value_json.battery}},
+          {% endif %}
+          "last_seen": {{value_json.last_seen}},
+          "linkquality": {{value_json.linkquality}} 
+      }
+    command_topic: '<<global.mqtt_prefix>>/<<room>>/<<topic>>/set'
+    payload_open: '{ "position": 100 }'
+    payload_close: '{ "position": 0 }'

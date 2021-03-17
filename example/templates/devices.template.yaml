@@ -1,0 +1,144 @@
+instances:
+  # Kitchen
+  - name: Window
+    room: kitchen
+    topic: contact/window
+    type: contact
+    
+  - name: Motion
+    room: kitchen
+    topic: motion
+    type: motion
+
+  - name: Wall Switch
+    room: kitchen
+    topic: wall_switch
+    type: switch_single
+    energy_meter: true
+  
+  - name: Dishwasher
+    room: corridor
+    topic: power/dishwasher
+    type: switch_single
+    energy_meter: true
+  
+  - name: Window Blind
+    room: kitchen
+    topic: blind/window
+    type: cover
+  
+  
+  # Corridor
+  - name: Front door
+    room: corridor
+    topic: contact/door
+    type: contact
+    
+  - name: Motion
+    room: corridor
+    topic: motion
+    type: motion
+
+  - name: Wall Switch
+    room: corridor
+    topic: wall_switch
+    type: switch_double
+
+  - name: Dryer
+    room: corridor
+    topic: power/dryer
+    type: switch_single
+    energy_meter: true
+  
+  
+  # Bath
+  - name: Motion
+    room: bath
+    topic: motion
+    type: motion
+
+  - name: Wall Switch
+    room: bath
+    topic: wall_switch
+    type: switch_single
+    energy_meter: true
+    
+  - name: Washing machine
+    room: corridor
+    topic: power/washingmachine
+    type: switch_single
+    energy_meter: true
+
+
+  # Office
+  - name: Motion
+    room: office
+    topic: motion
+    type: motion
+
+  - name: Wall Switch
+    room: office
+    topic: wall_switch
+    type: switch_single
+    energy_meter: true
+  
+  - name: Desk
+    room: office
+    topic: power/deks
+    type: switch_single
+    energy_meter: true
+
+  # Bedroom
+  - name: Door
+    room: bedroom
+    topic: contact/door
+    type: contact
+  
+  - name: Window
+    room: bedroom
+    topic: contact/window
+    type: contact
+  
+  - name: Motion
+    room: bedroom
+    topic: motion
+    type: motion
+
+  - name: Wall Switch
+    room: bedroom
+    topic: wall_switch
+    type: switch_double
+
+  - name: Heater
+    room: bedroom
+    topic: power/heater
+    type: switch_single
+    energy_meter: true
+
+  - name: TV
+    room: bedroom
+    topic: power/tv
+    type: switch_single
+    energy_meter: true
+  
+  - name: Window Blind
+    room: bedroom
+    topic: blind/window
+    type: cover
+  
+  - name: Door Blind
+    room: bedroom
+    topic: blind/door
+    type: cover
+global:
+  mqtt_prefix: 'zigbee2mqtt'
+
+templates:
+  - !include devices/switch.yaml
+  - !include devices/cover.yaml
+  - !include devices/motion.yaml
+  - !include devices/contact.yaml
+  - !include devices/switch_double.yaml
+  - !include energy/power.yaml
+summaries:
+  - !include energy/power_summary.yaml

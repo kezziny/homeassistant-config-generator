@@ -1,0 +1,24 @@
+target: ../binary_sensor
+name: '<<_room_>>'
+where:
+  type: motion
+template: 
+  - platform: mqtt
+    name: <<room>> <<name>>
+    device_class: motion
+    state_topic: '<<global.mqtt_prefix>>/<<room>>/<<topic>>'
+    value_template: '{{ value_json.occupancy }}'
+    payload_on: true
+    payload_off: false
+    json_attributes_topic: '<<global.mqtt_prefix>>/<<room>>/<<topic>>'
+    json_attributes_template: >
+      { 
+          {% if "illuminance" in value_json %} 
+              "illuminance": {{value_json.illuminance}}, 
+          {% endif %} 
+          {% if "battery" in value_json %} 
+              "battery": {{value_json.battery}}, 
+          {% endif %} 
+          "last_seen": {{value_json.last_seen}}, 
+          "linkquality": {{value_json.linkquality}} 
+      }

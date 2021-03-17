@@ -1,0 +1,5 @@
+switch z2m: !include_dir_merge_list switch
+sensor z2m: !include_dir_merge_list sensor
+binary_sensor z2m: !include_dir_merge_list binary_sensor
+utility_meter: !include_dir_merge_named utility_meter
+cover z2m: !include_dir_merge_list cover

@@ -1,0 +1,29 @@
+target: ../switch
+name: '<<_room_>>'
+where:
+  type: switch_single
+template: 
+  - platform: mqtt
+    name: <<room>> <<name>>
+    state_topic: '<<global.mqtt_prefix>>/<<room>>/<<topic>>'
+    command_topic: '<<global.mqtt_prefix>>/<<room>>/<<topic>>/set'
+    value_template: '{{ value_json.state }}'
+    state_on: 'ON'
+    state_off: 'OFF'
+    payload_on: '{ "state": "ON" }'
+    payload_off: '{ "state": "OFF" }'
+    json_attributes_topic: '<<global.mqtt_prefix>>/<<room>>/<<topic>>'
+    json_attributes_template: >
+      {
+          {% if "illuminance" in value_json %}
+              "illuminance": {{value_json.illuminance}},
+          {% endif %}
+          {% if "battery" in value_json %}
+              "battery": {{value_json.battery}},
+          {% endif %}
+          {% if "power" in value_json %}
+              "power": {{value_json.power}},
+          {% endif %}
+          "last_seen": {{value_json.last_seen}},
+          "linkquality": {{value_json.linkquality}} 
+      }

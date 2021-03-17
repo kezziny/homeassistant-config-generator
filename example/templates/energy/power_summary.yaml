@@ -1,0 +1,71 @@
+where: 
+  energy_meter: true
+group_by: room
+each:
+  - target: ../sensor
+    name: power.group.<<_group_>>
+    template:
+      - platform: template
+        sensors:
+          <<_group_>>_power:
+            friendly_name: '<<group>> power'
+            value_template: >
+                {% set array = <<instances>> %}
+                {% set sum = namespace(states=[]) %}
+                {% for i in array %}
+                  {% set sum.states = sum.states + [states('sensor.<<_group_>>_' + i["name"].lower().replace(' ', '_') + '_power')|float] %}
+                {% endfor %}
+                {{ sum.states | sum | round(2) }}
+            unit_of_measurement: w
+  - target: ../sensor
+    name: <<_group_>>
+    template:
+      - platform: integration
+        source: sensor.<<_group_>>_power
+        name: <<group>> Consumption
+        round: 2
+        unit: w
+        unit_prefix: k
+  - target: ../utility_meter
+    name: <<_group_>>
+    template:
+      <<_group_>>_consumption_monthly:
+          source: sensor.<<_group_>>_consumption
+          cycle: monthly
+      <<_group_>>_consumption_daily:
+          source: sensor.<<_group_>>_consumption
+          cycle: daily
+final:
+  - target: ../sensor
+    name: power.sum.home
+    template:
+      - platform: template
+        sensors:
+          home_power:
+            friendly_name: 'Home power'
+            value_template: >
+                {% set array = <<groups>> %}
+                {% set sum = namespace(states=[]) %}
+                {% for i in array %}
+                  {% set sum.states = sum.states + [states('sensor.' + i["group"].lower().replace(' ', '_') + '_power')|float] %}
+                {% endfor %}
+                {{ sum.states | sum | round(2) }}
+            unit_of_measurement: w
+  - target: ../sensor
+    name: Home.power
+    template:
+      - platform: integration
+        source: sensor.home_power
+        name: Home Consumption
+        round: 2
+        unit: w
+        unit_prefix: k
+  - target: ../utility_meter
+    name: power.sum.home
+    template:
+      home_consumption_monthly:
+          source: sensor.home_consumption
+          cycle: monthly
+      home_consumption_daily:
+          source: sensor.home_consumption
+          cycle: daily

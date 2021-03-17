@@ -1,0 +1,10 @@
+target: ../sensor
+name: 'power.<<_room_>>'
+where:
+  energy_meter: true
+template:
+  - platform: mqtt
+    name: <<room>> <<name>> Power
+    state_topic: '<<global.mqtt_prefix>>/<<room>>/<<topic>>'
+    value_template: '{{ value_json.power }}'
+    unit_of_measurement: w
